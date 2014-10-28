@@ -1,6 +1,6 @@
 """
-Purpose:        Drop post points for stand sampling given polygons for input.
-DOB:            28 Oct 2014
+Purpose:    Drop post points for stand sampling given polygons for input.
+DOB:        28 Oct 2014
 """
 __author__ = 'Joel McCune (http://github.com/knu2xs)'
 
@@ -93,17 +93,16 @@ def byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing, inpu
                     # stop and break out of the current for loop
                     break
 
-
-
     # create output feature class from the array of points
     outFc = arcpy.CopyFeatures_management(postList, os.path.join(outputWorkspace, 'standSamplePosts'))[0]
 
     # return the path to the output feature class
     return outFc
 
-if __name__ == '__main__':
-    inputFeatures = sys.argv[0]
-    outputWorkspace = sys.argv[1]
-    xGridSpacing = sys.argv[2]
-    yGridSpacing = sys.argv[3]
-    byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing)
+# call the function
+byDimension(
+    inputFeatures=sys.argv[0],
+    outputWorkspace=sys.argv[1],
+    xGridSpacing=sys.argv[2],
+    yGridSpacing=sys.argv[3]
+)
