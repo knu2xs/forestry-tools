@@ -9,6 +9,7 @@ import arcpy
 import os.path
 import sys
 
+
 def byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing, inputUnitMeasure='Foot'):
     """
     :param inputFeatures: Input stands as selected features from a feature layer.
@@ -29,15 +30,25 @@ def byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing, inpu
     # get the extent of the selection layer
     extent = arcpy.Describe(standFc).extent
 
+    # ensure the unit of measure is either feet or meters
+    if inputUnitMeasure != ('Feet' or 'feet' or 'Meters' or 'meters'):
+        arcpy.AddError('Invalid unit of measure. Please specify either feet or meters for inputUnitMeasure.')
+        arcpy.ExecuteError()
+
     # if the spatial reference unit of measure is meters and the input dimensions are feet, convert to meters
-    if sr.linearUnitName == 'Meters' and inputUnitMeasure == 'Feet':
+    if sr.linearUnitName == 'Meters' and (inputUnitMeasure == 'Feet' or inputUnitMeasure == 'feet'):
         xGridSpacing *= 3.28084
         yGridSpacing *= 3.28084
 
+    # if the spatial reference unit of measure is feet and the input dimensions are meters, convert to feet
+    elif sr.linearUnitName == 'Feet' and (inputUnitMeasure != 'Meters' or inputUnitMeasure != 'meters'):
+        xGridSpacing /= 3.28084
+        yGridSpacing /= 3.28084
+
     # set the origin to 1/2 of the grid spacing, effectively in the middle of what would be a grid cell
     origin = arcpy.Point(
-        extent.XMin + (0.5 * xGridSpacing),
-        extent.YMin + (0.5 * yGridSpacing)
+        extent.XMin + (xGridSpacing / 2),
+        extent.YMin + (yGridSpacing / 2)
     )
 
     # get number of points for width and height based on point being in middle of dimensional grid
@@ -95,3 +106,4 @@ if __name__ == '__main__':
     outputWorkspace = sys.argv[1]
     xGridSpacing = sys.argv[2]
     yGridSpacing = sys.argv[3]
+    byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing)
