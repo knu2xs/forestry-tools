@@ -7,9 +7,10 @@ __author__ = 'Joel McCune (http://github.com/knu2xs)'
 # import modules
 import arcpy
 import os.path
+import random
 
 
-def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, inputUnitMeasure='Feet'):
+def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, inputUnitMeasure='Feet'):
     """
     :param inputFeatures: Input stands as selected features from a feature layer.
     :param xGridSpacing: The horizontal grid spacing.
@@ -57,11 +58,8 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
         xGridSpacing /= 3.28084
         yGridSpacing /= 3.28084
 
-    # set the origin to 1/2 of the grid spacing, effectively in the middle of what would be a grid cell
-    origin = arcpy.Point(
-        extent.XMin + (xGridSpacing / 2),
-        extent.YMin + (yGridSpacing / 2)
-    )
+    # set the origin
+    origin = arcpy.Point(extent.XMin, extent.YMin)
 
     # get number of points for width and height based on point being in middle of dimensional grid
     xCount = int((extent.width - xGridSpacing) / xGridSpacing + 1)
@@ -78,31 +76,53 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
         for row in cursor:
             standGeomList.append(row[0])
 
-    # for every post position horizontally
+    # for every grid box horizontally
     for x in range(0, xCount):
 
-        # set the x coordinate to the column times spacing plus the origin coordinates
-        xCoord = x * xGridSpacing + origin.X
+        # set the x coordinate minimum to the column times spacing plus the origin coordinates
+        boxXMin = x * xGridSpacing + origin.X
+
+        # set the x coordinate maximum to the column plus one times spacing plus the origin coordinate
+        boxXMax = (x + 1) * xGridSpacing + origin.X
 
         # for every post position vertically
         for y in range(0, yCount):
 
-            # set the y coordinate to the row times spacing plus the origin coordinates
-            yCoord = y * yGridSpacing + origin.Y
+            # set the y coordinate minimum to the row times spacing plus the origin coordinates
+            boxYMin = y * yGridSpacing + origin.Y
 
-            # create point geometry object from coordinates
-            thisPost = arcpy.PointGeometry(arcpy.Point(xCoord, yCoord), sr)
+            # set the y coordinate maximum to the row plus one times spacing plus the origin coordinate
+            boxYMax = (y + 1) * yGridSpacing + origin.Y
+
+            # create polygon geometry for the current bounding box
+            boxGeometry = arcpy.Polygon(
+                arcpy.Array([
+                    arcpy.Point(boxXMin, boxYMin),
+                    arcpy.Point(boxXMin, boxYMax),
+                    arcpy.Point(boxXMax, boxYMax),
+                    arcpy.Point(boxXMax, boxYMin)
+                ]),
+            sr)
 
             # for every stand geometry
             for standGeom in standGeomList:
 
-                # if the current post is within the stand polygon
-                if thisPost.within(standGeom):
-                    # add the post to the array
-                    postList.append(thisPost)
+                # if any part of the current bounding box extent is within any part of the stand
+                if standGeom.overlaps(boxGeometry):
 
-                    # stop and break out of the current for loop
-                    break
+                    # create a geometry with just the overlap area
+                    overlapGeom = standGeom.intersect(boxGeometry, 4)
+
+                    # create a point geometry object with the same spatial reference as the rest of the data
+                    thisPoint = arcpy.Point()
+                    thisPointGeom = arcpy.PointGeometry(thisPoint, sr)
+
+                    # while the point is not within the geometry of the stand, keep trying to create another point
+                    while not thisPointGeom.within(overlapGeom):
+
+                        # generate a random point within the overlap geometry extent
+                        thisPoint.X = random.uniform(overlapGeom.extent.XMin, overlapGeom.extent.XMax)
+                        thisPoint.Y = random.uniform(overlapGeom.extent.YMin, overlapGeom.extent.YMax)
 
     # create output feature class from the array of points
     outFc = arcpy.CopyFeatures_management(postList, outputFeatureClass)
@@ -111,7 +131,7 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
     return outFc
 
 # call the function
-byDimension(
+byDimensionRandom(
     inputFeatures=arcpy.GetParameter(0),
     xGridSpacing=arcpy.GetParameterAsText(1),
     yGridSpacing=arcpy.GetParameterAsText(2),
