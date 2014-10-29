@@ -98,7 +98,7 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
                     break
 
     # create output feature class from the array of points
-    outFc = arcpy.CopyFeatures_management(postList, os.path.join(outputFeatureClass, 'standSamplePosts'))
+    outFc = arcpy.CopyFeatures_management(postList, outputFeatureClass)
 
     # return the path to the output feature class
     return outFc
