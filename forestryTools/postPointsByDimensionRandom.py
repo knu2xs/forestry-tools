@@ -108,7 +108,7 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
             for standGeom in standGeomList:
 
                 # if any part of the current bounding box extent is within any part of the stand
-                if standGeom.overlaps(boxGeometry):
+                if boxGeometry.overlaps(standGeom) or boxGeometry.within(standGeom):
 
                     # create a geometry with just the overlap area
                     overlapGeom = standGeom.intersect(boxGeometry, 4)
@@ -123,6 +123,12 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
                         # generate a random point within the overlap geometry extent
                         thisPoint.X = random.uniform(overlapGeom.extent.XMin, overlapGeom.extent.XMax)
                         thisPoint.Y = random.uniform(overlapGeom.extent.YMin, overlapGeom.extent.YMax)
+
+                        # update the point geometry
+                        thisPointGeom = arcpy.PointGeometry(thisPoint, sr)
+
+                    # Now, with an intersecting point in hand, add it to the list
+                    postList.append(thisPointGeom)
 
     # create output feature class from the array of points
     outFc = arcpy.CopyFeatures_management(postList, outputFeatureClass)
