@@ -10,7 +10,7 @@ import os.path
 import sys
 
 
-def byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing, inputUnitMeasure='Foot'):
+def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, inputUnitMeasure='Feet'):
     """
     :param inputFeatures: Input stands as selected features from a feature layer.
     :param outputWorkspace: Where to save the output post points.
@@ -20,28 +20,32 @@ def byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing, inpu
     :return: outFc: Path to the output feature class of post points.
     """
 
+    # ensure grid spacings are int
+    xGridSpacing = int(xGridSpacing)
+    yGridSpacing = int(yGridSpacing)
+
     # set spatial reference to be the same as the input feature class
     sr = arcpy.Describe(inputFeatures).spatialReference
     arcpy.env.outputCoordinateSystem = sr
 
     # assuming a feature is selected, create a layer only referencing these features
-    standFc = arcpy.arcpy.CopyFeatures_management(inputFeatures, 'standTemp')[0]
+    standFc = arcpy.CopyFeatures_management(inputFeatures, 'standTemp')[0]
 
     # get the extent of the selection layer
     extent = arcpy.Describe(standFc).extent
 
     # ensure the unit of measure is either feet or meters
-    if inputUnitMeasure != ('Feet' or 'feet' or 'Meters' or 'meters'):
+    if inputUnitMeasure.lower() != ('feet' or 'meters'):
         arcpy.AddError('Invalid unit of measure. Please specify either feet or meters for inputUnitMeasure.')
         arcpy.ExecuteError()
 
     # if the spatial reference unit of measure is meters and the input dimensions are feet, convert to meters
-    if sr.linearUnitName == 'Meters' and (inputUnitMeasure == 'Feet' or inputUnitMeasure == 'feet'):
+    if sr.linearUnitName == 'Meters' and (inputUnitMeasure.lower() == 'feet'):
         xGridSpacing *= 3.28084
         yGridSpacing *= 3.28084
 
     # if the spatial reference unit of measure is feet and the input dimensions are meters, convert to feet
-    elif sr.linearUnitName == 'Feet' and (inputUnitMeasure != 'Meters' or inputUnitMeasure != 'meters'):
+    elif sr.linearUnitName == 'Feet' and (inputUnitMeasure.lower() != 'meters'):
         xGridSpacing /= 3.28084
         yGridSpacing /= 3.28084
 
@@ -52,8 +56,8 @@ def byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing, inpu
     )
 
     # get number of points for width and height based on point being in middle of dimensional grid
-    xCount = int((extent.width - xGridSpacing) / xGridSpacing)
-    yCount = int((extent.height - yGridSpacing) / yGridSpacing)
+    xCount = int((extent.width - xGridSpacing) / xGridSpacing + 1)
+    yCount = int((extent.height - yGridSpacing) / yGridSpacing + 1)
 
     # point list to populate
     postList = []
@@ -94,15 +98,15 @@ def byDimension(inputFeatures, outputWorkspace, xGridSpacing, yGridSpacing, inpu
                     break
 
     # create output feature class from the array of points
-    outFc = arcpy.CopyFeatures_management(postList, os.path.join(outputWorkspace, 'standSamplePosts'))[0]
+    outFc = arcpy.CopyFeatures_management(postList, os.path.join(outputFeatureClass, 'standSamplePosts'))
 
     # return the path to the output feature class
     return outFc
 
 # call the function
 byDimension(
-    inputFeatures=sys.argv[0],
-    outputWorkspace=sys.argv[1],
-    xGridSpacing=sys.argv[2],
-    yGridSpacing=sys.argv[3]
+    inputFeatures=arcpy.GetParameter(0),
+    xGridSpacing=arcpy.GetParameterAsText(1),
+    yGridSpacing=arcpy.GetParameterAsText(2),
+    outputFeatureClass=arcpy.GetParameterAsText(3)
 )
