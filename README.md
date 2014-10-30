@@ -36,3 +36,14 @@ Similar to the Equal Distribution tool, the Random Points Within Grid tool expec
 * **Y Spacing Distance** - This is the linear spacing distance for the grid's vertical or y axis. The default unit of measure is feet.
 
 * **Output Feature Class** - This is the location and name of the points feature class to be created by the tool.
+
+
+## Apache License 2.0
+
+Copyright [yyyy] [name of copyright owner]
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use the scripts and tools in this repository except in compliance with the License. A copy of the License is included in this repository or you may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Please, see the License for the specific language governing permissions and limitations under the License.
