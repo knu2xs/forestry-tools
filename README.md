@@ -1,7 +1,7 @@
 forestry-tools
 ==============
 
-The scripts and associated ArcGIS custom toolbox in this repository are designed to facilitate silviculture workflows. Currently there are two tools facilitating creation of sampling points covering the entire stand area to ensure uniform sampling; equal distribution and random distribution across a grid.
+The scripts and associated ArcGIS custom toolbox in this repository are designed to facilitate silviculture workflows. Currently there are two tools facilitating creation of sampling points covering the entire stand area to ensure uniform sampling; equal distribution and random distribution across a grid. This set of tools is licensed under an Apache 2.0 license.
 
 If you find this toolbox useful, please contribute to it. Every open source project, big or small, is the product of people contributing to it. You can contribute by developing and also contributing to the documentation. Please feel free to [fork this project](https://help.github.com/articles/fork-a-repo/), add additional tools and functionality, and submit a [pull requrest](https://help.github.com/articles/using-pull-requests/). If you do not code, but understand the methology and science tools, please feel free to flesh out or clarify the documentation both in the toolbox, and also in the repository, either in this readme or in the [wiki] (https://github.com/knu2xs/forestry-tools/wiki).
 
@@ -36,3 +36,13 @@ Similar to the Equal Distribution tool, the Random Points Within Grid tool expec
 * **Horizontal Spacing Distance** - This is the linear spacing distance for the grid's horizontal or y axis. The default unit of measure is feet.
 
 * **Output Feature Class** - This is the location and name of the points feature class to be created by the tool.
+
+## Apache License 2.0
+
+Copyright 2014 Joel McCune
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use the scripts and resources included in this repository except in compliance with the License. A copy of the License is included in this repository or you may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
