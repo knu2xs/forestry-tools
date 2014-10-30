@@ -3,6 +3,8 @@ forestry-tools
 
 The scripts and associated ArcGIS custom toolbox in this repository are designed to facilitate silviculture workflows. Currently there are two tools facilitating creation of sampling points covering the entire stand area to ensure uniform sampling; equal distribution and random distribution across a grid.
 
+If you find this toolbox useful, please contribute to it. Every open source project, big or small, is the product of people contributing to it. You can contribute by developing and also contributing to the documentation. Please feel free to [fork this project](https://help.github.com/articles/fork-a-repo/), add additional tools and functionality, and submit a [pull requrest](https://help.github.com/articles/using-pull-requests/). If you do not code, but understand the methology and science tools, please feel free to flesh out or clarify the documentation both in the toolbox, and also in the repository, either in this readme or in the [wiki] (https://github.com/knu2xs/forestry-tools/wiki).
+
 ## Equal Distribution
 
 Equal distribution distributes points across a uniform grid pattern, allowing you to independently control both vertical and horizontal spacing. This methodology facilitates uniform sampling across the stand area.
