@@ -3,6 +3,11 @@ Purpose:    Drop post points for stand sampling given polygons for input.
 DOB:        28 Oct 2014
 """
 __author__ = 'Joel McCune (http://github.com/knu2xs)'
+__license__ = "Apache"
+__version__ = "2.0"
+__maintainer__ = "Joel McCune"
+__email__ = "joel.mccune+github@gmail.com"
+__status__ = "Production"
 
 # import modules
 import arcpy
