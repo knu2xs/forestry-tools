@@ -40,7 +40,7 @@ Similar to the Equal Distribution tool, the Random Points Within Grid tool expec
 
 ## Apache License 2.0
 
-Copyright [yyyy] [name of copyright owner]
+Copyright 2014 Joel McCune
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use the scripts and tools in this repository except in compliance with the License. A copy of the License is included in this repository or you may obtain a copy of the License at
 
