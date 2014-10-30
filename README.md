@@ -31,8 +31,8 @@ Similar to the Equal Distribution tool, the Random Points Within Grid tool expec
 
 * **Units of Measure** (not yet implemented) - This is the linear unit of measure defining the sample point spacing. It can be either feet, meters or chains. The default is feet.
 
-* **Vertical Spacing Distance** - This is the linear spacing distance for the grid's vertical or y axis. The default unit of measure is feet.
-
 * **X Spacing Distance** - This is the linear spacing distance for the grid's horizontal or x axis. The default unit of measure is feet.
+
+* **Y Spacing Distance** - This is the linear spacing distance for the grid's vertical or y axis. The default unit of measure is feet.
 
 * **Output Feature Class** - This is the location and name of the points feature class to be created by the tool.
