@@ -43,19 +43,35 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
     extent = arcpy.Describe(standFc).extent
 
     # ensure the unit of measure is either feet or meters
-    if inputUnitMeasure.lower() != ('feet' or 'meters'):
+    if inputUnitMeasure.lower() != ('feet' or 'meters' or 'chains'):
         arcpy.AddError('Invalid unit of measure. Please specify either feet or meters for inputUnitMeasure.')
         arcpy.ExecuteError()
 
-    # if the spatial reference unit of measure is meters and the input dimensions are feet, convert to meters
-    if sr.linearUnitName == 'Meters' and (inputUnitMeasure.lower() == 'feet'):
-        xGridSpacing *= 3.28084
-        yGridSpacing *= 3.28084
+    # if the spatial reference unit of measure is meters
+    if sr.linearUnitName == 'Meters':
 
-    # if the spatial reference unit of measure is feet and the input dimensions are meters, convert to feet
-    elif sr.linearUnitName == 'Feet' and (inputUnitMeasure.lower() != 'meters'):
-        xGridSpacing /= 3.28084
-        yGridSpacing /= 3.28084
+        # and the input unit of measure is feet, convert to meters
+        if inputUnitMeasure.lower() == 'feet':
+            xGridSpacing *= 3.28084
+            yGridSpacing *= 3.28084
+
+        # and the input unit of measure is chains, convert to meters
+        elif inputUnitMeasure.lower() == 'chains':
+            xGridSpacing *= 20.1168
+            yGridSpacing *= 20.1168
+
+    # if the spatial reference unit of measure is feet
+    elif sr.linearUnitName == 'Feet':
+
+        # and the input dimensions are meters, convert to feet
+        if inputUnitMeasure.lower() == 'meters':
+            xGridSpacing *= 0.3048
+            yGridSpacing *= 0.3048
+
+        # and the input dimenstions are chains, convert to feet
+        if inputUnitMeasure.lower() == 'chains':
+            xGridSpacing *= 66
+            yGridSpacing *= 66
 
     # set the origin to 1/2 of the grid spacing, effectively in the middle of what would be a grid cell
     origin = arcpy.Point(
@@ -113,7 +129,8 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
 # call the function
 byDimension(
     inputFeatures=arcpy.GetParameter(0),
-    xGridSpacing=arcpy.GetParameterAsText(1),
-    yGridSpacing=arcpy.GetParameterAsText(2),
-    outputFeatureClass=arcpy.GetParameterAsText(3)
+    inputUnitMeasure=arcpy.GetParameterAsText(1),
+    xGridSpacing=arcpy.GetParameterAsText(2),
+    yGridSpacing=arcpy.GetParameterAsText(3),
+    outputFeatureClass=arcpy.GetParameterAsText(4)
 )
