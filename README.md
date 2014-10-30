@@ -1,7 +1,7 @@
 forestry-tools
 ==============
 
-The scripts and associated ArcGIS custom toolbox in this repository are designed to facilitate silviculture workflows. Currently there are two tools to facilitating creation of sampling points covering the entire stand area ensuring uniform sampling, equal distribution and random distribution across a grid.
+The scripts and associated ArcGIS custom toolbox in this repository are designed to facilitate silviculture workflows. Currently there are two tools facilitating creation of sampling points covering the entire stand area to ensure uniform sampling; equal distribution and random distribution across a grid.
 
 ## Equal Distribution
 
