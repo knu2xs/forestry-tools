@@ -141,6 +141,9 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
                     # stop and break out of the current for loop
                     break
 
+    # take out the trash
+    arcpy.Delete_management(standFc)
+
     # create output feature class from the array of points
     outFc = arcpy.CopyFeatures_management(postList, outputFeatureClass)
 

@@ -166,6 +166,9 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
                     # Now, with an intersecting point in hand, add it to the list
                     postList.append(thisPointGeom)
 
+    # take out the trash
+    arpcy.Delete_management(standFc)
+
     # create output feature class from the array of points
     outFc = arcpy.CopyFeatures_management(postList, outputFeatureClass)
 
