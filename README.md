@@ -3,7 +3,7 @@ forestry-tools
 
 The scripts and associated ArcGIS custom toolbox in this repository are designed to facilitate silviculture workflows. Currently there are two tools to facilitating creation of sampling points covering the entire stand area ensuring uniform sampling, equal distribution and random distribution across a grid.
 
-# Equal Distribution
+## Equal Distribution
 
 Equal distribution distributes points across a uniform grid pattern, allowing you to independently control both vertical and horizontal spacing. This methodology facilitates uniform sampling across the stand area.
 
@@ -19,7 +19,7 @@ The tool expects five parameter inputs; the input feature class, units of measur
 
 * **Output Feature Class** - This is the location and name of the points feature class to be created by the tool.
 
-# Random Points Within Grid
+## Random Points Within Grid
 
 This tool creates a grid across the area of the selected stands. Inside each of the grid areas it places a randomly distributed point inside of the stand. Hence if you specify 110 x 110 ft. grid spacing. The tool will create a grid across your stand areas with each grid area covering 110 x 100 ft. Inside of each of these 110 x 110 ft. areas, it will randomly place one sampling point. This methodology achieves both a uniform and random sampling of the stand areas.
 
