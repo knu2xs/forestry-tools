@@ -25,9 +25,10 @@ __email__ = "joel.mccune+github@gmail.com"
 __status__ = "Production"
 
 # import modules
-import arcpy
 import os.path
 import random
+
+import arcpy
 
 
 def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, inputUnitMeasure='Feet'):
@@ -64,8 +65,8 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
     extent = arcpy.Describe(standFc).extent
 
     # ensure the unit of measure is either feet or meters
-    if inputUnitMeasure.lower() != ('feet' or 'meters'):
-        arcpy.AddError('Invalid unit of measure. Please specify either feet or meters for inputUnitMeasure.')
+    def throwLinearUnitsError():
+        arcpy.AddError('Invalid unit of measure. Please specify either feet, meters or chains for inputUnitMeasure.')
         arcpy.ExecuteError()
 
     # if the spatial reference unit of measure is meters
@@ -73,26 +74,34 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
 
         # and the input unit of measure is feet, convert to meters
         if inputUnitMeasure.lower() == 'feet':
-            xGridSpacing *= 3.28084
-            yGridSpacing *= 3.28084
+            xGridSpacing *= 0.3048
+            yGridSpacing *= 0.3048
 
         # and the input unit of measure is chains, convert to meters
         elif inputUnitMeasure.lower() == 'chains':
             xGridSpacing *= 20.1168
             yGridSpacing *= 20.1168
 
+        # if it is not feet, chains or meters...houston we have a problem
+        elif inputUnitMeasure.lower != 'meters':
+            throwLinearUnitsError()
+
     # if the spatial reference unit of measure is feet
     elif sr.linearUnitName == 'Feet':
 
         # and the input dimensions are meters, convert to feet
         if inputUnitMeasure.lower() == 'meters':
-            xGridSpacing *= 0.3048
-            yGridSpacing *= 0.3048
+            xGridSpacing *= 3.28084
+            yGridSpacing *= 3.28084
 
         # and the input dimensions are chains, convert to feet
-        if inputUnitMeasure.lower() == 'chains':
+        elif inputUnitMeasure.lower() == 'chains':
             xGridSpacing *= 66
             yGridSpacing *= 66
+
+        # if it is not meters, chains or feet...houston we have a problem
+        elif inputUnitMeasure.lower != 'feet':
+            throwLinearUnitsError()
 
     # set the origin
     origin = arcpy.Point(extent.XMin, extent.YMin)
@@ -167,7 +176,7 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
                     postList.append(thisPointGeom)
 
     # take out the trash
-    arpcy.Delete_management(standFc)
+    arcpy.Delete_management(standFc)
 
     # create output feature class from the array of points
     outFc = arcpy.CopyFeatures_management(postList, outputFeatureClass)
@@ -179,7 +188,7 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
 byDimensionRandom(
     inputFeatures=arcpy.GetParameter(0),
     inputUnitMeasure=arcpy.GetParameterAsText(1),
-    xGridSpacing=arcpy.GetParameterAsText(2),
-    yGridSpacing=arcpy.GetParameterAsText(3),
+    xGridSpacing=arcpy.GetParameter(2),
+    yGridSpacing=arcpy.GetParameter(3),
     outputFeatureClass=arcpy.GetParameterAsText(4)
 )

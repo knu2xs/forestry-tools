@@ -65,7 +65,7 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
 
     # ensure the unit of measure is either feet or meters
     if inputUnitMeasure.lower() != ('feet' or 'meters' or 'chains'):
-        arcpy.AddError('Invalid unit of measure. Please specify either feet or meters for inputUnitMeasure.')
+        arcpy.AddError('Invalid unit of measure. Please specify either feet, meters or chains for inputUnitMeasure.')
         arcpy.ExecuteError()
 
     # if the spatial reference unit of measure is meters
@@ -154,7 +154,7 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
 byDimension(
     inputFeatures=arcpy.GetParameter(0),
     inputUnitMeasure=arcpy.GetParameterAsText(1),
-    xGridSpacing=arcpy.GetParameterAsText(2),
-    yGridSpacing=arcpy.GetParameterAsText(3),
+    xGridSpacing=arcpy.GetParameter(2),
+    yGridSpacing=arcpy.GetParameter(3),
     outputFeatureClass=arcpy.GetParameterAsText(4)
 )
