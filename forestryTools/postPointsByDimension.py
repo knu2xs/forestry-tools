@@ -155,7 +155,7 @@ if __name__ == "__main__":
     byDimension(
         inputFeatures=arcpy.GetParameter(0),
         inputUnitMeasure=arcpy.GetParameterAsText(1),
-        xGridSpacing=arcpy.GetParameter(2),
-        yGridSpacing=arcpy.GetParameter(3),
+        xGridSpacing=arcpy.GetParameterAsText(2),
+        yGridSpacing=arcpy.GetParameterAsText(3),
         outputFeatureClass=arcpy.GetParameterAsText(4)
     )
