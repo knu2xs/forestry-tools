@@ -69,7 +69,7 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
         arcpy.ExecuteError()
 
     # if the spatial reference unit of measure is meters
-    if sr.linearUnitName == 'Meters':
+    if sr.linearUnitName == 'Meter':
 
         # and the input unit of measure is feet, convert to meters
         if inputUnitMeasure.lower() == 'feet':
@@ -82,7 +82,7 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
             yGridSpacing *= 20.1168
 
     # if the spatial reference unit of measure is feet
-    elif sr.linearUnitName == 'Feet':
+    elif sr.linearUnitName == 'Foot':
 
         # and the input dimensions are meters, convert to feet
         if inputUnitMeasure.lower() == 'meters':
@@ -150,11 +150,12 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
     # return the path to the output feature class
     return outFc
 
-# call the function
-byDimension(
-    inputFeatures=arcpy.GetParameter(0),
-    inputUnitMeasure=arcpy.GetParameterAsText(1),
-    xGridSpacing=arcpy.GetParameter(2),
-    yGridSpacing=arcpy.GetParameter(3),
-    outputFeatureClass=arcpy.GetParameterAsText(4)
-)
+if __name__ == "__main__":
+    # call the function
+    byDimension(
+        inputFeatures=arcpy.GetParameter(0),
+        inputUnitMeasure=arcpy.GetParameterAsText(1),
+        xGridSpacing=arcpy.GetParameter(2),
+        yGridSpacing=arcpy.GetParameter(3),
+        outputFeatureClass=arcpy.GetParameterAsText(4)
+    )

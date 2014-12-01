@@ -1,1 +1,2 @@
-__all__ = ['postPoints']
+from postPointsByDimension import byDimension as postPointsByDimension
+from postPointsByDimensionRandom import byDimensionRandom as postPointsByDimensionRandom

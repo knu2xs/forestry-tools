@@ -70,7 +70,7 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
         arcpy.ExecuteError()
 
     # if the spatial reference unit of measure is meters
-    if sr.linearUnitName == 'Meters':
+    if sr.linearUnitName == 'Meter':
 
         # and the input unit of measure is feet, convert to meters
         if inputUnitMeasure.lower() == 'feet':
@@ -87,7 +87,7 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
             throwLinearUnitsError()
 
     # if the spatial reference unit of measure is feet
-    elif sr.linearUnitName == 'Feet':
+    elif sr.linearUnitName == 'Foot':
 
         # and the input dimensions are meters, convert to feet
         if inputUnitMeasure.lower() == 'meters':
@@ -116,8 +116,11 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
     # list of input polygon geometries
     standGeomList = []
 
+    # if using a saved feature layer on disk, create layer object in memory
+    lyrStands = arcpy.MakeFeatureLayer_management(inputFeatures)[0]
+
     # get geometry object from the input feature
-    with arcpy.da.SearchCursor(inputFeatures, 'SHAPE@') as cursor:
+    with arcpy.da.SearchCursor(lyrStands, 'SHAPE@') as cursor:
         for row in cursor:
             standGeomList.append(row[0])
 
@@ -184,11 +187,12 @@ def byDimensionRandom(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureCl
     # return the path to the output feature class
     return outFc
 
-# call the function
-byDimensionRandom(
-    inputFeatures=arcpy.GetParameter(0),
-    inputUnitMeasure=arcpy.GetParameterAsText(1),
-    xGridSpacing=arcpy.GetParameter(2),
-    yGridSpacing=arcpy.GetParameter(3),
-    outputFeatureClass=arcpy.GetParameterAsText(4)
-)
+if __name__ == "__main__":
+    # call the function
+    byDimensionRandom(
+        inputFeatures=arcpy.GetParameter(0),
+        inputUnitMeasure=arcpy.GetParameterAsText(1),
+        xGridSpacing=arcpy.GetParameter(2),
+        yGridSpacing=arcpy.GetParameter(3),
+        outputFeatureClass=arcpy.GetParameterAsText(4)
+    )
