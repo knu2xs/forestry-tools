@@ -110,8 +110,11 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
     # list of input polygon geometries
     standGeomList = []
 
+    # if using a saved feature layer on disk, create layer object in memory
+    lyrStands = arcpy.MakeFeatureLayer_management(inputFeatures)[0]
+
     # get geometry object from the input feature
-    with arcpy.da.SearchCursor(inputFeatures, 'SHAPE@') as cursor:
+    with arcpy.da.SearchCursor(lyrStands, 'SHAPE@') as cursor:
         for row in cursor:
             standGeomList.append(row[0])
 
@@ -135,6 +138,7 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
 
                 # if the current post is within the stand polygon
                 if thisPost.within(standGeom):
+
                     # add the post to the array
                     postList.append(thisPost)
 
