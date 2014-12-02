@@ -3,7 +3,7 @@ forestry-tools
 
 The scripts and associated ArcGIS custom toolbox in this repository are designed to facilitate silviculture workflows. Currently there are two tools facilitating creation of sampling points covering the entire stand area to ensure uniform sampling; equal distribution and random distribution across a grid. This set of tools is licensed under an Apache 2.0 license.
 
-If you find this toolbox useful, please contribute to it. Every open source project, big or small, is the product of people contributing to it. You can contribute by developing and also contributing to the documentation. Please feel free to [fork this project](https://help.github.com/articles/fork-a-repo/), add additional tools and functionality, and submit a [pull requrest](https://help.github.com/articles/using-pull-requests/). If you do not code, but understand the methology and science tools, please feel free to flesh out or clarify the documentation both in the toolbox, and also in the repository, either in this readme or in the [wiki] (https://github.com/knu2xs/forestry-tools/wiki).
+If you find this toolbox useful, please contribute to it. Every open source project, big or small, is the product of people contributing to it. You can contribute by developing and also contributing to the documentation. Please feel free to [fork this project](https://help.github.com/articles/fork-a-repo/), add additional tools and functionality, and submit a [pull requrest](https://help.github.com/articles/using-pull-requests/). If you do not code, but understand the methodology and science behind the tools, please feel free to flesh out or clarify the documentation both in the toolbox, and also in the repository, either in this readme or in the [wiki] (https://github.com/knu2xs/forestry-tools/wiki).
 
 ## Create Points with Constant Spacing
 
@@ -29,7 +29,7 @@ Similar to the Equal Distribution tool, the Random Points Within Grid tool expec
 
 * **Input Stands Feature Class** - This is a polygon feature class delineating the stands you would like to creating sampling points for. It honors selected features. Hence, if you select stands either interactively, by attribute or by location, sample points will only be created inside the selected features. Also, the spatial reference for this feature class must be a projected coordinate system.
 
-* **Units of Measure** (not yet implemented) - This is the linear unit of measure defining the sample point spacing. It can be either feet, meters or chains. The default is feet.
+* **Units of Measure** - This is the linear unit of measure defining the sample point spacing. It can be either feet, meters or chains. The default is feet.
 
 * **X Spacing Distance** - This is the linear spacing distance for the grid's horizontal or x axis. The default unit of measure is feet.
 
