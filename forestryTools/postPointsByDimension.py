@@ -68,38 +68,41 @@ def byDimension(inputFeatures, xGridSpacing, yGridSpacing, outputFeatureClass, i
         arcpy.AddError('Invalid unit of measure. Please specify either feet, meters or chains for inputUnitMeasure.')
         arcpy.ExecuteError()
 
+    # format the input unit of measure
+    inputUnitMeasure = inputUnitMeasure.lower()
+
     # if the spatial reference unit of measure is meters
     if sr.linearUnitName == 'Meter':
 
         # and the input unit of measure is feet, convert to meters
-        if inputUnitMeasure.lower() == 'feet':
+        if inputUnitMeasure == 'feet':
             xGridSpacing *= 0.3048
             yGridSpacing *= 0.3048
 
         # and the input unit of measure is chains, convert to meters
-        elif inputUnitMeasure.lower() == 'chains':
+        elif inputUnitMeasure == 'chains':
             xGridSpacing *= 20.1168
             yGridSpacing *= 20.1168
 
         # if it is not feet, chains or meters...houston we have a problem
-        elif inputUnitMeasure.lower != 'meters':
+        elif inputUnitMeasure != 'meters':
             throwLinearUnitsError()
 
     # if the spatial reference unit of measure is feet
     elif sr.linearUnitName == 'Foot':
 
         # and the input dimensions are meters, convert to feet
-        if inputUnitMeasure.lower() == 'meters':
+        if inputUnitMeasure == 'meters':
             xGridSpacing *= 3.28084
             yGridSpacing *= 3.28084
 
         # and the input dimensions are chains, convert to feet
-        elif inputUnitMeasure.lower() == 'chains':
+        elif inputUnitMeasure == 'chains':
             xGridSpacing *= 66
             yGridSpacing *= 66
 
         # if it is not meters, chains or feet...houston we have a problem
-        elif inputUnitMeasure.lower != 'feet':
+        elif inputUnitMeasure != 'feet':
             throwLinearUnitsError()
 
     # set the origin to 1/2 of the grid spacing, effectively in the middle of what would be a grid cell

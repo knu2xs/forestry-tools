@@ -1,2 +1,2 @@
-from postPointsByDimension import byDimension as postPointsByDimension
-from postPointsByDimensionRandom import byDimensionRandom as postPointsByDimensionRandom
+from forestryTools.postPointsByDimension import byDimension as postPointsByDimension
+from forestryTools.postPointsByDimensionRandom import byDimensionRandom as postPointsByDimensionRandom
